@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>weather report</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+    <link href="https://unpkg.com/@yaireo/tagify/dist/tagify.css" rel="stylesheet" type="text/css" />
+  <style>
+    .country{
+  text-transform: uppercase;
+  font-size: small;
+}
+  </style>
+  </head>
+
+  <body>
+    <!-- As a heading -->
+    <nav class="navbar bg-body-tertiary">
+        <div class="container-fluid">
+        <span class="navbar-brand mb-0 px-2 h1">Weather Report</span>
+        </div>
+    </nav>
+    <div class="container-fluid">
+          <form action="" method="post">
+            {% csrf_token %}
+            <div class="m-5 col-md-6 ">
+                <div class="row mb-3">
+                    <label class="form-label">Enter City/Cities (press enter):</label>
+                    <div class="col-sm-10">
+                        <input name='tags' value='New Delhi' class="form-control" autofocus>
+                    </div>
+                    <div class="col-sm-2">
+                        <input type="submit" class="btn btn-secondary" value="Search">
+                    </div>
+                </div>
+            </div>
+          </form>
+          {% if details %}
+          <div class="container">
+            <div class="row">
+              {% for detail in details %}
+              <div class="col-3">
+                <div class="card" style="width: 18rem;">
+                    <img src="{{detail.image_url}}" class="card-img-top" alt="...">
+                    <div class="card-body">
+                      <h5 class="card-title">{{detail.city |title}} <span class="country">({{detail.country}})</span></h5> 
+                      <p class="card-text">
+                        {{detail.interpretation |title}}<br>
+                        Temperature - <b>{{detail.temperature}} &#8451;</b><br>
+                        Wind speed - {{detail.windspeed}}kmh<br>
+                        Wind direction - {{detail.winddirection}} degree<br>
+                        Time - {{detail.time}}<br>
+                      </p>
+                    </div>
+                </div>
+              </div>
+              {% endfor %}
+            </div>
+        </div>
+        {% else %}
+          <div class="card mt-5 mx-5">
+            <div class="card-body">
+              <blockquote class="blockquote mb-0">
+                <p>A change in the weather is sufficient to recreate the world and ourselves.</p>
+                <footer class="blockquote-footer"><cite title="Source Title">Marcel Proust</cite></footer>
+              </blockquote>
+            </div>
+          </div>
+          {% endif %}
+          
+        
+    </div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/@yaireo/tagify"></script>
+    <script src="https://unpkg.com/@yaireo/tagify@3.1.0/dist/tagify.polyfills.min.js"></script>
+    <script>
+            // The DOM element you wish to replace with Tagify
+            var input = document.querySelector('input[name=tags]');
+
+            // initialize Tagify on the above input node reference
+            new Tagify(input)
+    </script>
+  </body>
+</html>
